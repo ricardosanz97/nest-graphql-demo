@@ -22,21 +22,40 @@ export class AuthorsResolver {
   ) {}
 
   // Query resolver function
+  /**
+   * Gets an author given its id
+   * @param id the id of the author
+   * @returns the author object
+   */
   @Query(() => Author)
-  async getAuthor(@Args('id', { type: () => Int }) id: number) {
+  async getAuthor(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<Author> {
     return this.authorsService.findOneById(id);
   }
 
   // Field resolver function
+  /**
+   * Gets all the posts of an author
+   * @param author the author to get the posts from
+   * @returns a list of posts
+   */
   @ResolveField('getPosts', () => [Post])
-  async getPosts(@Parent() author: Author) {
+  async getPosts(@Parent() author: Author): Promise<Post[]> {
     const { id } = author;
     return this.postsService.findAll({ authorId: id });
   }
 
   // ? https://docs.nestjs.com/graphql/mutations
+  /**
+   * Updates a post by upvoting it
+   * @param postId the id of the post to upvote
+   * @returns the updated post
+   */
   @Mutation(() => Post)
-  async upvotePost(@Args({ name: 'postId', type: () => Int }) postId: number) {
+  async upvotePost(
+    @Args({ name: 'postId', type: () => Int }) postId: number,
+  ): Promise<Post> {
     return this.postsService.upvoteById(postId);
   }
 }
