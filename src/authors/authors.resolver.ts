@@ -1,6 +1,7 @@
 import {
   Args,
   Int,
+  Mutation,
   Parent,
   Query,
   ResolveField,
@@ -23,7 +24,7 @@ export class AuthorsResolver {
   // Query resolver function
   @Query(() => Author)
   async getAuthor(@Args('id', { type: () => Int }) id: number) {
-    return await this.authorsService.findOneById(id);
+    return this.authorsService.findOneById(id);
   }
 
   // Field resolver function
@@ -31,5 +32,11 @@ export class AuthorsResolver {
   async getPosts(@Parent() author: Author) {
     const { id } = author;
     return this.postsService.findAll({ authorId: id });
+  }
+
+  // ? https://docs.nestjs.com/graphql/mutations
+  @Mutation(() => Post)
+  async upvotePost(@Args({ name: 'postId', type: () => Int }) postId: number) {
+    return this.postsService.upvoteById(postId);
   }
 }

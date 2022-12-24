@@ -19,3 +19,7 @@ type Author {
 type Query {
   getAuthor(id: Int!): Author!
 }
+
+type Mutation {
+  upvotePost(postId: Int!): Post!
+}
