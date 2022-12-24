@@ -10,7 +10,7 @@ import { PostsService } from 'src/posts/posts.service';
 
 import { AuthorsService } from './authors.service';
 import { Author } from './models/author.model';
-import { GetAuthorArgs } from './dto/get-author-args.dto';
+import { Post } from '../posts/models/post.model';
 
 // ? https://docs.nestjs.com/graphql/resolvers
 @Resolver(() => Author)
@@ -27,7 +27,7 @@ export class AuthorsResolver {
   }
 
   // Field resolver function
-  @ResolveField()
+  @ResolveField('getPosts', () => [Post])
   async getPosts(@Parent() author: Author) {
     const { id } = author;
     return this.postsService.findAll({ authorId: id });

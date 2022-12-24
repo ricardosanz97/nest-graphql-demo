@@ -4,6 +4,11 @@ import { Author } from './models/author.model';
 @Injectable()
 export class AuthorsService {
   async findOneById(id: number): Promise<Author> {
-    return new Author();
+    const author: Author = new Author();
+    author.id = id;
+    author.firstName = 'Ricardo';
+    author.lastName = 'Sanz';
+    author.posts = [];
+    return author;
   }
 }
